@@ -1,0 +1,205 @@
+#+TITLE: Emacs Configuration File
+#+AUTHOR: Manish Koirala
+#+DATE: Wed Feb  5 21:37:18 2025
+#+STARTUP: content
+
+* Package Repos
+** Add melpa
+#+begin_src elisp :tangle init.el
+(require 'package)
+(setq package-enable-at-startup nil)
+
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/"))
+
+(package-initialize) 
+#+end_src
+
+
+* Sane Defaults
+** Maximize at startup
+#+begin_src elisp :tangle init.el
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  
+#+end_src
+
+** Frame Transparency
+#+begin_src elisp :tangle init.el
+  (set-frame-parameter nil 'alpha-background 95)
+  (add-to-list 'default-frame-alist '(alpha-background . 95))
+#+end_src
+
+** Disable startup message
+#+begin_src elisp :tangle init.el
+  (setq inhibit-startup-message t)  
+#+end_src
+
+** Enable visible bell
+#+begin_src elisp :tangle init.el
+  (setq visible-bell t)
+#+end_src
+
+** Disable menu-bar, tool-bar and scroll-bar
+#+begin_src elisp :tangle init.el
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)  
+#+end_src
+
+** Electric Pair Mode
+#+begin_src elisp :tangle init.el
+  (setq electric-pair-pairs '(
+			      (?\< . ?\>)
+			      (?\{ . ?\})			    
+			      (?\( . ?\))
+			      (?\[ . ?\])
+			      (?\" . ?\")
+			      ))
+  (electric-pair-mode t)
+  
+#+end_src
+
+** Default Font
+#+begin_src elisp :tangle init.el
+  (add-to-list 'default-frame-alist '( font . "JetBrainsMono Nerd Font-11" ))  
+#+end_src
+
+** Disable backups and autosaves
+#+begin_src elisp :tangle init.el
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+  
+#+end_src
+
+** Line Numbers.
+#+begin_src elisp :tangle init.el
+  (setq display-line-numbers-type 'relative)  
+  (global-display-line-numbers-mode 1)
+
+#+end_src
+
+** Minibuffer completion
+#+begin_src elisp :tangle init.el
+  (fido-vertical-mode 1)
+
+#+end_src
+
+
+
+* Useful Packages
+** Themes
+#+begin_src elisp :tangle init.el
+  ;; Doom Themes
+  (unless (package-installed-p 'doom-themes)
+    (package-install 'doom-themes))
+
+  ;; Zenburn Theme
+  (unless (package-installed-p 'zenburn-theme)
+    (package-install 'zenburn-theme))
+
+  ;; Solarized Theme
+  (unless (package-installed-p 'solarized-theme)
+    (package-install 'solarized-theme))
+  
+  ;; Spacemacs Theme
+  (unless (package-installed-p 'spacemacs-theme)
+    (package-install 'spacemacs-theme))
+
+  ;; Gruvbox Theme
+  (unless (package-installed-p 'gruvbox-theme)
+    (package-install 'gruvbox-theme))
+
+  ;; Use correct theme.
+  (load-theme 'spacemacs-dark t)
+
+#+end_src
+
+** Snippets
+#+begin_src elisp :tangle init.el
+  ;; Yasnippet
+  (use-package "yasnippet"
+    :ensure t
+    :config
+    (yas-global-mode t))
+  
+#+end_src
+
+** Git
+#+begin_src elisp :tangle init.el
+  ;; Magit
+  (use-package "magit"
+    :ensure t)
+
+#+end_src
+
+** Dashboard
+#+begin_src elisp :tangle init.el
+  (use-package "dashboard"
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-items '((recents . 5)
+			    (projects . 5))))
+  
+#+end_src
+
+** Modeline
+#+begin_src elisp :tangle init.el
+  (use-package "spaceline"
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq powerline-default-separator (quote arrow))
+    (spaceline-spacemacs-theme))
+  
+#+end_src
+
+** Delete unused packages or modes
+#+begin_src elisp :tangle init.el
+  (use-package "diminish" ; Remove these default minor modes.
+    :ensure t
+    :init
+    (diminish 'which-key-mode)
+    (diminish 'linum-relative-mode)
+    (diminish 'hungry-delete-mode)
+    (diminish 'visual-line-mode)
+    (diminish 'subword-mode)
+    (diminish 'beacon-mode)
+    (diminish 'irony-mode)
+    (diminish 'page-break-lines-mode)
+    (diminish 'auto-revert-mode)
+    (diminish 'rainbow-delimiters-mode)
+    (diminish 'rainbow-mode)
+    (diminish 'yas-minor-mode)
+    (diminish 'flycheck-mode)
+    (diminish 'helm-mode))
+#+end_src
+
+** Org bullets
+#+begin_src elisp :tangle init.el
+  (use-package "org-bullets" ; Better org bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+#+end_src
+
+** Terminal Emulator
+#+begin_src elisp :tangle init.el
+  (use-package "vterm"
+    :ensure t)
+  
+#+end_src
+
+** Completion framework
+#+begin_src elisp :tangle init.el
+  (use-package "corfu"
+    :ensure t)
+#+end_src
+
+** Vim Emulation
+#+begin_src elisp :tangle init.el
+  (use-package "evil"
+    :ensure t)
+#+end_src
+

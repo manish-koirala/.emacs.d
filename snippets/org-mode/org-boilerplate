@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: org-boilerplate
+# key: >org
+# --
+#+TITLE: $1
+#+AUTHOR: Manish Koirala
+#+DATE: `(current-time-string)`
+
+$0
