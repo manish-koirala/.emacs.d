@@ -132,17 +132,6 @@
 
 #+end_src
 
-** Dashboard
-#+begin_src elisp :tangle init.el
-  (use-package "dashboard"
-    :ensure t
-    :config
-    (dashboard-setup-startup-hook)
-    (setq dashboard-items '((recents . 5)
-			    (projects . 5))))
-  
-#+end_src
-
 ** Modeline
 #+begin_src elisp :tangle init.el
   (use-package "spaceline"
@@ -186,20 +175,62 @@
 
 ** Terminal Emulator
 #+begin_src elisp :tangle init.el
+  ;; Vterm
   (use-package "vterm"
     :ensure t)
-  
+
+  ;; Vterm toggle.
+  (use-package "vterm-toggle"
+    :ensure t
+    :bind
+    (("C-`"        . vterm-toggle)
+     :map vterm-mode-map
+     ("<C-return>" . vterm-toggle-insert-cd))
+    :config
+    (add-to-list 'display-buffer-alist
+		 '("\*vterm\*"
+		   (display-buffer-in-side-window)
+		   (window-height . 0.3)
+		   (side . bottom)
+		   (slot . 0))))
 #+end_src
 
 ** Completion framework
 #+begin_src elisp :tangle init.el
   (use-package "corfu"
-    :ensure t)
+    :ensure t
+    :config
+    (global-corfu-mode 1))
+
 #+end_src
 
 ** Vim Emulation
 #+begin_src elisp :tangle init.el
   (use-package "evil"
     :ensure t)
+#+end_src
+
+
+* Treesitter
+** Auto config
+#+begin_src elisp :tangle init.el
+  (use-package "treesit-auto"
+    :ensure t
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (treesit-auto-add-to-auto-mode-alist 'all)
+    (global-treesit-auto-mode))
+#+end_src
+
+
+* LSP
+** Ensure lsp for these major modes.
+#+begin_src elsip :tangle init.el
+  (add-hook 'python-ts-mode-hook  'eglot-ensure)
+  (add-hook 'c-ts-mode-hook 'eglot-ensure)
+  (add-hook 'c++-ts-mode-hook 'eglot-ensure)
+  (add-hook 'typescript-ts-mode-hook 'eglot-ensure)
+  (add-hook 'js-ts-mode-hook 'eglot-ensure)
 #+end_src
 

@@ -71,13 +71,6 @@
 (use-package "magit"
   :ensure t)
 
-(use-package "dashboard"
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-items '((recents . 5)
-			  (projects . 5))))
-
 (use-package "spaceline"
   :ensure t
   :config
@@ -108,11 +101,55 @@
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+;; Vterm
 (use-package "vterm"
   :ensure t)
 
+;; Vterm toggle.
+(use-package vterm-toggle
+  :bind
+  (("C-`"        . vterm-toggle)
+   :map vterm-mode-map
+   ("<C-return>" . vterm-toggle-insert-cd))
+  :config
+  (add-to-list 'display-buffer-alist
+	       '("\*vterm\*"
+		 (display-buffer-in-side-window)
+		 (window-height . 0.3)
+		 (side . bottom)
+		 (slot . 0))))
+
 (use-package "corfu"
-  :ensure t)
+  :ensure t
+  :config
+  (global-corfu-mode 1))
 
 (use-package "evil"
   :ensure t)
+
+(use-package "treesit-auto"
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+(add-hook 'python-ts-mode-hook  'eglot-ensure)
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+(add-hook 'typescript-ts-mode-hook 'eglot-ensure)
+(add-hook 'js-ts-mode-hook 'eglot-ensure)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(vterm-toggle treesit-auto zenburn-theme yasnippet vterm vertico spacemacs-theme spaceline solarized-theme org-bullets magit gruvbox-theme evil doom-themes diminish corfu)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
